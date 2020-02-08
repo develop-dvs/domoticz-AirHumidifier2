@@ -1,4 +1,4 @@
-# domoticz-AirPurifier2
+# domoticz-AirHumidifier2
 Domoticz plugin for Xiaomi Humidifier 1 and 2
 * based on https://github.com/mgrom/domoticz-AirHumidifier
 
