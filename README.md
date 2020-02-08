@@ -25,7 +25,7 @@ Restart Domoticz
 
 ## Update
 ```
-cd YOUR_DOMOTICZ_PATH/plugins/domoticz-AirPurifier2
+cd YOUR_DOMOTICZ_PATH/plugins/domoticz-AirHumidifier2
 git pull
 ```
 * Restart Domoticz
