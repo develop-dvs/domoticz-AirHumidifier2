@@ -491,6 +491,7 @@ class BasePlugin:
                 # https://github.com/aholstenson/miio/issues/131#issuecomment-376881949
                 # Max depth is 120. That's why value -> value / 1.2.
                 waterlevel = int(res.waterlevel)/1.2
+                self.variables[self.UNIT_WATER_LEVEL]['nValue'] = int(waterlevel)
                 self.variables[self.UNIT_WATER_LEVEL]['sValue'] = waterlevel
             except KeyError:
                 pass  # No water level value
