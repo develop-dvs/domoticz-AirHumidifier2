@@ -2,9 +2,9 @@
 #
 # Author: DCRM
 #
-# TODO: Set led brightness, Set buzzer on/off, Set child lock on/off, Set dry mode on/off
+# TODO: ??
 #
-# v 0.2
+# v 0.2.1
 """
 <plugin key="AirHumidifier2" name="AirHumidifier2" author="DCRM" version="0.2" wikilink="https://github.com/rytilahti/python-miio" externallink="https://github.com/develop-dvs/domoticz-AirHumidifier2">
     <params>
@@ -18,6 +18,7 @@
 			</options>
 		</param>
                 <param field="Mode3" label="Check every x minutes" width="40px" default="15" required="true" />
+                <param field="Mode4" label="Water limit turn off level" width="40px" default="15" />
 		<param field="Mode6" label="Debug" width="75px">
 			<options>
 				<option label="True" value="Debug"/>
@@ -56,6 +57,10 @@ L10N = {
             "Цель",
         "Water level":
             "Уровень воды",
+        "Normal waterlevel":
+            "Достаточно воды",
+        "Mini waterlevel":
+            "Мало воды",
         "Auto|Silent|Medium|High":
             "Авто|Тихий|Нормальный|Максимальный",
         "Favorite Fan Level":
@@ -273,6 +278,7 @@ class BasePlugin:
                 "Used":     0,
                 "nValue":   0,
                 "sValue":   None,
+                #"percentage":   0,
             },
             self.UNIT_TARGET_HUMIDITY: {
                 "Name":     _("Target Humidity"),
@@ -490,7 +496,15 @@ class BasePlugin:
             try:
                 # https://github.com/aholstenson/miio/issues/131#issuecomment-376881949
                 # Max depth is 120. That's why value -> value / 1.2.
-                waterlevel = int(res.waterlevel)/1.2
+                waterlevel = (int(res.waterlevel)-14)/1.2
+
+                if waterlevel >= 20:
+                    #pollutionText = _("Normal waterlevel")
+                    waterlevel_status = 1
+                else:
+                    #pollutionText = _("Mini waterlevel")
+                    waterlevel_status = 0
+                
                 self.variables[self.UNIT_WATER_LEVEL]['nValue'] = int(waterlevel)
                 self.variables[self.UNIT_WATER_LEVEL]['sValue'] = waterlevel
             except KeyError:
