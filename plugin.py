@@ -6,7 +6,7 @@
 #
 # v 0.2.1
 """
-<plugin key="AirHumidifier2" name="Xiaomi AirHumidifier2" author="DCRM" version="0.2" wikilink="https://github.com/rytilahti/python-miio" externallink="https://github.com/develop-dvs/domoticz-AirHumidifier2">
+<plugin key="AirHumidifier2" name="Xiaomi Air Humidifier" author="DCRM" version="0.2" wikilink="https://github.com/rytilahti/python-miio" externallink="https://github.com/develop-dvs/domoticz-AirHumidifier2">
     <params>
 		<param field="Address" label="IP Address" width="200px" required="true" default="127.0.0.1"/>
 		<param field="Mode1" label="AirHumidifier Token" default="" width="400px" required="true"  />
@@ -15,6 +15,7 @@
 				<option label="zhimi.humidifier.v1" value="zhimi.humidifier.v1" default="true"/>
 				<option label="zhimi.humidifier.ca1" value="zhimi.humidifier.ca1"/>
 				<option label="zhimi.humidifier.cb1" value="zhimi.humidifier.cb1"/>
+                <option label="zhimi.humidifier.ca4" value="zhimi.humidifier.ca4"/>
 			</options>
 		</param>
         <param field="Mode3" label="Check every x minutes" width="40px" default="15" required="true" />
@@ -148,10 +149,13 @@ def _(key):
         return key
     
 def humiExecute(AddressIP, token, model):
-    import miio.airhumidifier
-    return miio.airhumidifier.AirHumidifier(AddressIP, token, 0, 0, True, model)
+    """New model https://python-miio.readthedocs.io/en/latest/api/miio.airhumidifier_miot.html"""
+    import miio.airhumidifier;
+    if model == 'zhimi.humidifier.ca4':
+        return miio.airhumidifier_miot.AirHumidifierMiot(AddressIP, token)
+    else:
+        return miio.airhumidifier.AirHumidifier(AddressIP, token, 0, 0, True, model)
 
-        
 class UnauthorizedException(Exception):
     def __init__(self, expression, message):
         self.expression = expression
