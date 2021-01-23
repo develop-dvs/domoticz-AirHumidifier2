@@ -6,7 +6,7 @@
 #
 # v 0.2.1
 """
-<plugin key="AirHumidifier2" name="AirHumidifier2" author="DCRM" version="0.2" wikilink="https://github.com/rytilahti/python-miio" externallink="https://github.com/develop-dvs/domoticz-AirHumidifier2">
+<plugin key="AirHumidifier2" name="Xiaomi AirHumidifier2" author="DCRM" version="0.2" wikilink="https://github.com/rytilahti/python-miio" externallink="https://github.com/develop-dvs/domoticz-AirHumidifier2">
     <params>
 		<param field="Address" label="IP Address" width="200px" required="true" default="127.0.0.1"/>
 		<param field="Mode1" label="AirHumidifier Token" default="" width="400px" required="true"  />
@@ -17,8 +17,8 @@
 				<option label="zhimi.humidifier.cb1" value="zhimi.humidifier.cb1"/>
 			</options>
 		</param>
-                <param field="Mode3" label="Check every x minutes" width="40px" default="15" required="true" />
-                <param field="Mode4" label="Water limit turn off level" width="40px" default="15" />
+        <param field="Mode3" label="Check every x minutes" width="40px" default="15" required="true" />
+        <param field="Mode4" label="Water limit turn off level" width="40px" default="15" />
 		<param field="Mode6" label="Debug" width="75px">
 			<options>
 				<option label="True" value="Debug"/>

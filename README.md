@@ -9,7 +9,7 @@ Domoticz plugin for Xiaomi Humidifier 1 and 2
 
 ## Installation
 ```
-pip3 install -U python-miio
+sudo pip3 install -U python-miio
 ```
 
 * Make sure your Domoticz instance supports Domoticz Plugin System - see more https://www.domoticz.com/wiki/Using_Python_plugins
