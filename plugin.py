@@ -15,7 +15,7 @@
 				<option label="zhimi.humidifier.v1" value="zhimi.humidifier.v1" default="true"/>
 				<option label="zhimi.humidifier.ca1" value="zhimi.humidifier.ca1"/>
 				<option label="zhimi.humidifier.cb1" value="zhimi.humidifier.cb1"/>
-                <option label="zhimi.humidifier.ca4" value="zhimi.humidifier.ca4"/>
+                <option label="zhimi.humidifier.ca4 (mb work)" value="zhimi.humidifier.ca4"/>
 			</options>
 		</param>
         <param field="Mode3" label="Check every x minutes" width="40px" default="15" required="true" />
@@ -39,6 +39,7 @@ import subprocess
 from pathlib import Path
 
 import miio.airhumidifier
+import miio.airhumidifier_miot
 
 L10N = {
     'ru': {
@@ -150,7 +151,7 @@ def _(key):
     
 def humiExecute(AddressIP, token, model):
     """New model https://python-miio.readthedocs.io/en/latest/api/miio.airhumidifier_miot.html"""
-    import miio.airhumidifier;
+
     if model == 'zhimi.humidifier.ca4':
         return miio.airhumidifier_miot.AirHumidifierMiot(AddressIP, token)
     else:
