@@ -4,9 +4,9 @@
 #
 # TODO: ??
 #
-# v 0.2.1
+# v 0.3
 """
-<plugin key="AirHumidifier2" name="Xiaomi Air Humidifier" author="DCRM" version="0.2" wikilink="https://github.com/rytilahti/python-miio" externallink="https://github.com/develop-dvs/domoticz-AirHumidifier2">
+<plugin key="AirHumidifier2" name="Xiaomi Air Humidifier" author="DCRM" version="0.3" wikilink="https://github.com/rytilahti/python-miio" externallink="https://github.com/develop-dvs/domoticz-AirHumidifier2">
     <params>
 		<param field="Address" label="IP Address" width="200px" required="true" default="127.0.0.1"/>
 		<param field="Mode1" label="AirHumidifier Token" default="" width="400px" required="true"  />
