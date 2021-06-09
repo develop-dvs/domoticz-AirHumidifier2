@@ -198,7 +198,22 @@ class HumidifierStatus:
         model = str(model)
         MyHumidifier = humiExecute(AddressIP, token, model)
 
-        data = str(MyHumidifier.status())
+        data = MyHumidifier.status()
+        if model == 'zhimi.humidifier.ca4':
+	    if Parameters["Mode6"] == 'Debug':
+                Domoticz.Debug(str(data))
+            self.power = data.power
+            self.humidity = data.humidity
+            self.temperature = data.temperature
+            self.mode = data.mode
+            self.target_humidity = data.target_humidity
+            self.waterlevel = data.water_level
+            self.dry = data.dry
+            self.led_brightness = data.led_brightness
+            self.motor_speed = data.motor_speed
+            return
+
+        data = str(data)
         if Parameters["Mode6"] == 'Debug':
             Domoticz.Debug(data[:30] + " .... " + data[-30:])
         data = data[19:-2]
