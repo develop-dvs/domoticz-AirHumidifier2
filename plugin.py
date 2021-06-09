@@ -200,7 +200,7 @@ class HumidifierStatus:
 
         data = MyHumidifier.status()
         if model == 'zhimi.humidifier.ca4':
-	    if Parameters["Mode6"] == 'Debug':
+            if Parameters["Mode6"] == 'Debug':
                 Domoticz.Debug(str(data))
             self.power = data.power
             self.humidity = data.humidity
