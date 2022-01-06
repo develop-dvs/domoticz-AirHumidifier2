@@ -204,7 +204,16 @@ class HumidifierStatus:
         self.temperature = data.temperature
         self.mode = data.mode
         self.target_humidity = data.target_humidity
-        self.waterlevel = data.water_level
+        self.water_level = data.water_level
+
+        if Parameters["Mode6"] == 'Debug':
+            Domoticz.Debug("power: " + self.power)
+            Domoticz.Debug("humidity: " + self.humidity)
+            Domoticz.Debug("temperature: " + self.temperature)
+            Domoticz.Debug("mode: " + self.mode)
+            Domoticz.Debug("target_humidity: " + self.target_humidity)
+            Domoticz.Debug("water_level: " + self.water_level)
+
         #self.dry = data.dry
         #self.led_brightness = data.led_brightness
         #self.motor_speed = data.motor_speed
@@ -504,23 +513,23 @@ class BasePlugin:
                 pass  # No temperature value
 
             try:
-                waterlevel = int(res.waterlevel)
+                water_level = int(res.water_level)
 
                 # Force fix water level
                 if Parameters["Mode5"] != "":
-                    if waterlevel >= int(Parameters["Mode5"]):
-                        waterlevel = 100
-                        # pollutionText = _("Normal waterlevel")
+                    if water_level >= int(Parameters["Mode5"]):
+                        water_level = 100
+                        # pollutionText = _("Normal water_level")
                         waterlevel_status = 1
 
                 if Parameters["Mode4"] != "":
-                    if waterlevel <= int(Parameters["Mode4"]):
-                        waterlevel = 0
-                    # pollutionText = _("Mini waterlevel")
+                    if water_level <= int(Parameters["Mode4"]):
+                        water_level = 0
+                    # pollutionText = _("Mini water_level")
                     waterlevel_status = 0
 
-                self.variables[self.UNIT_WATER_LEVEL]['nValue'] = int(waterlevel)
-                self.variables[self.UNIT_WATER_LEVEL]['sValue'] = waterlevel
+                self.variables[self.UNIT_WATER_LEVEL]['nValue'] = int(water_level)
+                self.variables[self.UNIT_WATER_LEVEL]['sValue'] = water_level
             except KeyError:
                 pass  # No water level value
 
@@ -581,9 +590,9 @@ class BasePlugin:
                     Domoticz.Log(_("Update unit=%d; nValue=%d; sValue=%s") % (unit, nV, sV))
                     Devices[unit].Update(nValue=nV, sValue=sV)
 
-    def sensor_measurement(self, addressIP, token, model):
+    def sensor_measurement(self, ip, token, model):
         """current sensor measurements"""
-        return HumidifierStatus(addressIP, token, model)
+        return HumidifierStatus(ip, token, model)
 
 
 global _plugin
