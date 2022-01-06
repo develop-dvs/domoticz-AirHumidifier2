@@ -154,11 +154,13 @@ def _(key):
 
 def humiExecute(AddressIP, token, model):
     """New model https://python-miio.readthedocs.io/en/latest/api/miio.airhumidifier_miot.html"""
-
-    if miio.__version__ != '0.5.4':
+    if model == miio.airhumidifier_miot.SMARTMI_EVAPORATIVE_HUMIDIFIER_2: #"zhimi.humidifier.ca4"
         return miio.airhumidifier_miot.AirHumidifierMiot(AddressIP, token)
     else:
-        return miio.airhumidifier.AirHumidifier(AddressIP, token, 0, 0, True, model)
+        if miio.__version__ == "0.5.4":
+            return miio.airhumidifier.AirHumidifier(AddressIP, token, 0, 0, True, model)
+        else:
+            return miio.airhumidifier.AirHumidifier(AddressIP, token)
 
 
 class UnauthorizedException(Exception):
@@ -226,9 +228,9 @@ class HumidifierStatus:
             self.mode = data["mode"]
             self.target_humidity = int(data["target_humidity"][:-1])
             self.waterlevel = data["depth"]
-            if Parameters["Mode6"] == 'Debug':
-                for item in data.keys():
-                    Domoticz.Debug(str(item) + " => " + str(data[item]))
+            #if Parameters["Mode6"] == 'Debug':
+            #    for item in data.keys():
+            #        Domoticz.Debug(str(item) + " => " + str(data[item]))
         else:
             self.power = data.power
             self.humidity = data.humidity
