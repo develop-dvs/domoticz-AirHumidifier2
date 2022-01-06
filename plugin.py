@@ -530,12 +530,15 @@ class BasePlugin:
                 waterlevel = int(res.waterlevel) / 1.2
 
                 # Force fix water level
-                if waterlevel >= int(Parameters["Mode5"]) and Parameters["Mode5"] != "":
-                    waterlevel = 100
-                    # pollutionText = _("Normal waterlevel")
-                    waterlevel_status = 1
-                elif waterlevel <= int(Parameters["Mode4"]) and Parameters["Mode4"] != "":
-                    waterlevel = 0
+                if Parameters["Mode5"] != "":
+                    if waterlevel >= int(Parameters["Mode5"]):
+                        waterlevel = 100
+                        # pollutionText = _("Normal waterlevel")
+                        waterlevel_status = 1
+
+                if Parameters["Mode4"] != "":
+                    if waterlevel <= int(Parameters["Mode4"]):
+                        waterlevel = 0
                     # pollutionText = _("Mini waterlevel")
                     waterlevel_status = 0
 
