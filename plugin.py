@@ -200,19 +200,19 @@ class HumidifierStatus:
 
         # Map vars
         self.power = data.power  # str
-        self.humidity = str(data.humidity)  # int
-        self.temperature = str(data.temperature)  # float
+        self.humidity = data.humidity  # int
+        self.temperature = data.temperature  # float
         self.mode = str(data.mode)  # OperationMode enum 0,1,2,3
-        self.target_humidity = str(data.target_humidity)  # int
-        self.water_level = str(data.water_level)  # int
+        self.target_humidity = data.target_humidity  # int
+        self.water_level = data.water_level  # int
 
         if Parameters["Mode6"] == 'Debug':
             Domoticz.Debug("power: " + self.power)
-            Domoticz.Debug("humidity: " + self.humidity)
-            Domoticz.Debug("temperature: " + self.temperature)
+            Domoticz.Debug("humidity: " + str(self.humidity))
+            Domoticz.Debug("temperature: " + str(self.temperature))
             Domoticz.Debug("mode: " + self.mode)
-            Domoticz.Debug("target_humidity: " + self.target_humidity)
-            Domoticz.Debug("water_level: " + self.water_level)
+            Domoticz.Debug("target_humidity: " + str(self.target_humidity))
+            Domoticz.Debug("water_level: " + str(self.water_level))
 
         # self.dry = data.dry
         # self.led_brightness = data.led_brightness
