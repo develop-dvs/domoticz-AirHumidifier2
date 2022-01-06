@@ -199,12 +199,12 @@ class HumidifierStatus:
             Domoticz.Debug(str(data))
 
         # Map vars
-        self.power = data.power
-        self.humidity = data.humidity
-        self.temperature = data.temperature
-        self.mode = data.mode
-        self.target_humidity = data.target_humidity
-        self.water_level = data.water_level
+        self.power = str(data.power)
+        self.humidity = str(data.humidity)
+        self.temperature = str(data.temperature)
+        self.mode = str(data.mode)
+        self.target_humidity = str(data.target_humidity)
+        self.water_level = str(data.water_level)
 
         if Parameters["Mode6"] == 'Debug':
             Domoticz.Debug("power: " + self.power)
