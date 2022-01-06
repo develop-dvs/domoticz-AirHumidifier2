@@ -6,7 +6,7 @@
 #
 # v 0.4
 """
-<plugin key="AirHumidifier2" name="Xiaomi Air Humidifier" author="DCRM" version="0.3" wikilink="https://github.com/rytilahti/python-miio" externallink="https://github.com/develop-dvs/domoticz-AirHumidifier2">
+<plugin key="AirHumidifier2" name="Xiaomi Air Humidifier" author="DCRM" version="0.4" wikilink="https://github.com/rytilahti/python-miio" externallink="https://github.com/develop-dvs/domoticz-AirHumidifier2">
     <params>
 		<param field="Address" label="IP Address" width="200px" required="true" default="127.0.0.1"/>
 		<param field="Mode1" label="AirHumidifier Token" default="" width="400px" required="true"  />
@@ -383,9 +383,10 @@ class BasePlugin:
     def onCommand(self, Unit, Command, Level, Hue):
         Domoticz.Log(
             "onCommand called for Unit " + str(Unit) + ": Parameter '" + str(Command) + "', Level: " + str(Level))
-        try:
-            MyHumidifier = humiExecute(Parameters["Address"], Parameters["Mode1"], Parameters["Mode2"])
 
+        MyHumidifier = humiExecute(Parameters["Address"], Parameters["Mode1"], Parameters["Mode2"])
+
+        try:
             if Unit == self.UNIT_POWER_CONTROL and str(Command).upper() == "ON":
                 MyHumidifier.on()
             elif Unit == self.UNIT_POWER_CONTROL and str(Command).upper() == "OFF":
@@ -406,12 +407,12 @@ class BasePlugin:
                 MyHumidifier.set_target_humidity(70)
             else:
                 Domoticz.Log("onCommand called not found")
-
-            data = str(MyHumidifier.status())
-            if Parameters["Mode6"] == 'Debug':
-                Domoticz.Debug(data)
         except Exception as e:
             Domoticz.Error(_("onCommand error: %s") % str(e))
+
+        data = str(MyHumidifier.status())
+        if Parameters["Mode6"] == 'Debug':
+            Domoticz.Debug(data)
 
         self.onHeartbeat(fetch=True)
 
