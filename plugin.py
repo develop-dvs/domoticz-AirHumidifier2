@@ -32,6 +32,7 @@
 </plugin>
 """
 import datetime
+from re import match
 
 import Domoticz
 import miio.airhumidifier
@@ -158,6 +159,26 @@ def humiExecute(ip, token, model):
         return miio.airhumidifier.AirHumidifier(ip, token)
 
 
+def humiMode(level, model):
+    if model == miio.airhumidifier_miot.SMARTMI_EVAPORATIVE_HUMIDIFIER_2:
+        if level == 0:
+            return miio.airhumidifier_miot.OperationMode.Auto
+        if level == 10:
+            return miio.airhumidifier_miot.OperationMode.Low
+        if level == 20:
+            return miio.airhumidifier_miot.OperationMode.Mid
+        if level == 30:
+            return miio.airhumidifier_miot.OperationMode.High
+    else:
+        if level == 0:
+            return miio.airhumidifier.OperationMode.Auto
+        if level == 10:
+            return miio.airhumidifier.OperationMode.Silent
+        if level == 20:
+            return miio.airhumidifier.OperationMode.Medium
+        if level == 30:
+            return miio.airhumidifier.OperationMode.High
+
 class UnauthorizedException(Exception):
     def __init__(self, expression, message):
         self.expression = expression
@@ -207,12 +228,12 @@ class HumidifierStatus:
         self.water_level = data.water_level  # int
 
         if Parameters["Mode6"] == 'Debug':
-            Domoticz.Debug("power: " + self.power)
-            Domoticz.Debug("humidity: " + str(self.humidity))
-            Domoticz.Debug("temperature: " + str(self.temperature))
-            Domoticz.Debug("mode: " + self.mode)
+            Domoticz.Debug("power:           " + self.power)
+            Domoticz.Debug("humidity:        " + str(self.humidity))
+            Domoticz.Debug("temperature:     " + str(self.temperature))
+            Domoticz.Debug("mode:            " + self.mode)
             Domoticz.Debug("target_humidity: " + str(self.target_humidity))
-            Domoticz.Debug("water_level: " + str(self.water_level))
+            Domoticz.Debug("water_level:     " + str(self.water_level))
 
         # self.dry = data.dry
         # self.led_brightness = data.led_brightness
@@ -253,20 +274,20 @@ class BasePlugin:
 
         self.nextpoll = datetime.datetime.now()
 
-        Domoticz.Debug("Miio library:" + ": " + miio.__version__)
-        if miio.__version__ == "0.5.4":
-            Domoticz.Debug("Please update Miio lib!")
-
         return
 
     def onStart(self):
-        Domoticz.Debug("onStart called")
         if Parameters["Mode6"] == 'Debug':
             self.debug = True
             Domoticz.Debugging(1)
             DumpConfigToLog()
         else:
             Domoticz.Debugging(0)
+
+        Domoticz.Debug("onStart called")
+        Domoticz.Debug("Miio library:" + ": " + miio.__version__)
+        if miio.__version__ == "0.5.4":
+            Domoticz.Log("Please update Miio lib!")
 
         Domoticz.Heartbeat(20)
         self.pollinterval = int(Parameters["Mode3"]) * 60
@@ -312,8 +333,7 @@ class BasePlugin:
                        "SelectorStyle": "0"
                        }
             Domoticz.Device(Name=_("Source"), Unit=self.UNIT_MODE_CONTROL, TypeName="Selector Switch", Switchtype=18,
-                            Image=7,
-                            Options=Options).Create()
+                            Image=7, Options=Options).Create()
             HumidityTarget = {"LevelActions": "|||",
                               "LevelNames": "50%|60%|70%",
                               "LevelOffHidden": "false",
@@ -323,11 +343,13 @@ class BasePlugin:
                             Options=HumidityTarget).Create()
             Domoticz.Log("Devices created.")
         else:
-            if (self.UNIT_POWER_CONTROL in Devices):
+
+            if self.UNIT_POWER_CONTROL in Devices:
                 Domoticz.Log("Device UNIT_MODE_CONTROL with id " + str(self.UNIT_POWER_CONTROL) + " exist")
             else:
                 Domoticz.Device(Name="Power", Unit=self.UNIT_POWER_CONTROL, TypeName="Switch", Image=7).Create()
-            if (self.UNIT_MODE_CONTROL in Devices):
+
+            if self.UNIT_MODE_CONTROL in Devices:
                 Domoticz.Log("Device UNIT_MODE_CONTROL with id " + str(self.UNIT_MODE_CONTROL) + " exist")
             else:
                 Options = {"LevelActions": "||||",
@@ -338,7 +360,8 @@ class BasePlugin:
                 Domoticz.Device(Name="Mode", Unit=self.UNIT_MODE_CONTROL, TypeName="Selector Switch", Switchtype=18,
                                 Image=7,
                                 Options=Options).Create()
-            if (self.UNIT_TARGET_HUMIDITY in Devices):
+
+            if self.UNIT_TARGET_HUMIDITY in Devices:
                 Domoticz.Log("Device UNIT_TARGET_HUMIDITY with id " + str(self.UNIT_TARGET_HUMIDITY) + " exist")
             else:
                 HumidityTarget = {"LevelActions": "|||",
@@ -373,14 +396,10 @@ class BasePlugin:
                 humiRef.on()
             elif Unit == self.UNIT_POWER_CONTROL and str(Command).upper() == "OFF":
                 humiRef.off()
+
             elif Unit == self.UNIT_MODE_CONTROL and int(Level) == 10:
-                humiRef.set_mode(miio.airhumidifier.OperationMode.Silent)
-            elif Unit == self.UNIT_MODE_CONTROL and int(Level) == 0:
-                humiRef.set_mode(miio.airhumidifier.OperationMode.Auto)
-            elif Unit == self.UNIT_MODE_CONTROL and int(Level) == 20:
-                humiRef.set_mode(miio.airhumidifier.OperationMode.Medium)
-            elif Unit == self.UNIT_MODE_CONTROL and int(Level) == 30:
-                humiRef.set_mode(miio.airhumidifier.OperationMode.High)
+                humiRef.set_mode(humiMode(int(Level), Parameters["Mode1"]))
+
             elif Unit == self.UNIT_TARGET_HUMIDITY and int(Level) == 0:
                 humiRef.set_target_humidity(50)
             elif Unit == self.UNIT_TARGET_HUMIDITY and int(Level) == 10:
