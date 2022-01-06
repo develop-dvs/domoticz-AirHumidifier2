@@ -5,8 +5,13 @@ Domoticz plugin for Xiaomi Humidifier 1 and 2
 * FIX! Work on windows and linux devices
 * Add Russian translation
 * Add Waterlevel sensor
-* Add select model list (zhimi.humidifier.v1 / zhimi.humidifier.ca1 / zhimi.humidifier.cb1 / zhimi.humidifier.ca4 (mb work))
-
+* Add select model list
+  * zhimi.humidifier.v1
+  * zhimi.humidifier.ca1
+  * zhimi.humidifier.cb1
+  * zhimi.humidifier.cb2
+  * zhimi.humidifier.ca4 (mb work)
+* Add force value level (if waterlevel sensor broken - 87%=Max and 32%=Min)
 ## Installation
 ```
 sudo pip3 install -U python-miio
@@ -26,6 +31,7 @@ Restart Domoticz
 
 ## Update
 ```
+sudo pip3 install -U python-miio --upgrade
 cd YOUR_DOMOTICZ_PATH/plugins/domoticz-AirHumidifier2
 git pull
 ```
