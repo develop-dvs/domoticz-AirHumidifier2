@@ -16,7 +16,7 @@
 				<option label="zhimi.humidifier.ca1" value="zhimi.humidifier.ca1"/>
 				<option label="zhimi.humidifier.cb1" value="zhimi.humidifier.cb1"/>
 				<option label="zhimi.humidifier.cb2" value="zhimi.humidifier.cb2"/>
-                <option label="zhimi.humidifier.ca4" value="zhimi.humidifier.ca4"/>
+				<option label="zhimi.humidifier.ca4" value="zhimi.humidifier.ca4"/>
 			</options>
 		</param>
         <param field="Mode3" label="Check every x minutes" width="40px" default="15" required="true" />
