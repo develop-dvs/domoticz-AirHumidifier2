@@ -208,15 +208,14 @@ class HumidifierStatus:
         model = str(model)
         MyHumidifier = humiExecute(AddressIP, token, model)
 
-
-
-
         data = MyHumidifier.status()
 
         if Parameters["Mode6"] == 'Debug':
+            Domoticz.Debug("after")
             Domoticz.Debug(data)
             #Domoticz.Debug(str(data))
 
+        return
         # Remap zhimi.humidifier.ca4
         if model == 'zhimi.humidifier.ca4':
             self.power = data.power
@@ -231,7 +230,7 @@ class HumidifierStatus:
             return
 
         # Map zhimi.humidifier.*
-        if (miioVersion=="0.5.4"):
+        if miioVersion == "0.5.4":
             data = str(data)
             data = data[19:-2]
             data = data.replace(' ', '')
