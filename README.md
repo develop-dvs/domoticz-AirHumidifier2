@@ -11,7 +11,7 @@ Domoticz plugin for Xiaomi Humidifier 1 and 2
   * zhimi.humidifier.cb1
   * zhimi.humidifier.cb2
   * zhimi.humidifier.ca4 (mb work)
-* Add force value level (if waterlevel sensor broken - 87%=Max and 32%=Min)
+* Add force value level, if waterlevel sensor broken - 87%=Max and 32%=Min (>_<)
 * Work with latest python-miio-0.5.9.2 (at this moment, **0.5.4 - unsupported**)
 ## Installation
 ```
@@ -28,7 +28,7 @@ git clone https://github.com/develop-dvs/domoticz-AirHumidifier2
 Restart Domoticz
 * Go to Setup > Hardware and create new Hardware with type: AirHumidifier2
 * Enter name (it's up to you), user name and password if define. If not leave it blank
-* Select your model (zhimi.humidifier.v1 / zhimi.humidifier.ca1 / zhimi.humidifier.cb1)
+* Select your model (zhimi.humidifier.v1 / ... / zhimi.humidifier.ca4)
 
 ## Update
 ```
