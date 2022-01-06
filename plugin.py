@@ -209,6 +209,7 @@ class HumidifierStatus:
 
         if Parameters["Mode6"] == 'Debug':
             Domoticz.Debug(str(data))
+            Domoticz.Debug("Lib: miio " + ": " + miio.__version__)
 
         # Remap zhimi.humidifier.ca4
         if model == 'zhimi.humidifier.ca4':
