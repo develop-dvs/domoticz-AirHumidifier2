@@ -563,9 +563,9 @@ class BasePlugin:
             try:
                 if res.mode == "OperationMode.Auto":
                     UpdateDevice(self.UNIT_MODE_CONTROL, 0, '0')
-                elif res.mode == "OperationMode.Silent":
+                elif res.mode == "OperationMode.Silent" or res.mode == "OperationMode.Low":  # Humi4
                     UpdateDevice(self.UNIT_MODE_CONTROL, 10, '10')
-                elif res.mode == "OperationMode.Medium":
+                elif res.mode == "OperationMode.Medium" or res.mode == "OperationMode.Mid":  # Humi4
                     UpdateDevice(self.UNIT_MODE_CONTROL, 20, '20')
                 elif res.mode == "OperationMode.High":
                     UpdateDevice(self.UNIT_MODE_CONTROL, 30, '30')
@@ -594,6 +594,7 @@ class BasePlugin:
 
     def doUpdate(self):
         Domoticz.Log(_("Starting device update"))
+        return
         for unit in self.variables:
             nV = self.variables[unit]['nValue']
             sV = self.variables[unit]['sValue']
