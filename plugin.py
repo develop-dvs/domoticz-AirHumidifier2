@@ -152,7 +152,7 @@ def _(key):
 
 def humiExecute(ip, token, model):
     """New model https://python-miio.readthedocs.io/en/latest/api/miio.airhumidifier_miot.html"""
-    if model == miio.airhumidifier_miot.SMARTMI_EVAPORATIVE_HUMIDIFIER_2: #"zhimi.humidifier.ca4"
+    if model == miio.airhumidifier_miot.SMARTMI_EVAPORATIVE_HUMIDIFIER_2:  # "zhimi.humidifier.ca4"
         return miio.airhumidifier_miot.AirHumidifierMiot(ip, token)
     else:
         return miio.airhumidifier.AirHumidifier(ip, token)
@@ -199,12 +199,12 @@ class HumidifierStatus:
             Domoticz.Debug(str(data))
 
         # Map vars
-        self.power = str(data.power)
-        self.humidity = str(data.humidity)
-        self.temperature = str(data.temperature)
-        self.mode = str(data.mode)
-        self.target_humidity = str(data.target_humidity)
-        self.water_level = str(data.water_level)
+        self.power = data.power  # str
+        self.humidity = str(data.humidity)  # int
+        self.temperature = str(data.temperature)  # float
+        self.mode = str(data.mode)  # OperationMode enum 0,1,2,3
+        self.target_humidity = str(data.target_humidity)  # int
+        self.water_level = str(data.water_level)  # int
 
         if Parameters["Mode6"] == 'Debug':
             Domoticz.Debug("power: " + self.power)
@@ -214,9 +214,9 @@ class HumidifierStatus:
             Domoticz.Debug("target_humidity: " + self.target_humidity)
             Domoticz.Debug("water_level: " + self.water_level)
 
-        #self.dry = data.dry
-        #self.led_brightness = data.led_brightness
-        #self.motor_speed = data.motor_speed
+        # self.dry = data.dry
+        # self.led_brightness = data.led_brightness
+        # self.motor_speed = data.motor_speed
         return
 
 
