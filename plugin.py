@@ -201,7 +201,7 @@ class HumidifierStatus:
         button_pressed=None, strong_mode_enabled=False, firmware_version_major=1.6.7, firmware_version_minor=0>
 
         """
-        Domoticz.Debug("__init__ start")
+        Domoticz.Debug("HumidifierStatus __init__ start")
         Domoticz.Debug("Lib: miio " + ": " + miio.__version__)  # normal work at 0.5.4
 
         #addressIP = str(AddressIP)
@@ -209,11 +209,11 @@ class HumidifierStatus:
         model = str(model)
         MyHumidifier = humiExecute(AddressIP, token, model)
         data = MyHumidifier.status()
-        Domoticz.Debug(data)
+        Domoticz.Debug(str(data))
 
         if Parameters["Mode6"] == 'Debug':
             Domoticz.Debug("after")
-            Domoticz.Debug(data)
+            Domoticz.Debug(str(data))
             #Domoticz.Debug(str(data))
 
         # Map old version
