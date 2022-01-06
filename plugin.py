@@ -159,7 +159,7 @@ def humiExecute(ip, token, model):
         return miio.airhumidifier.AirHumidifier(ip, token)
 
 
-def humiMode(level, model):
+def humiLeve2Mode(level, model):
     if model == miio.airhumidifier_miot.SMARTMI_EVAPORATIVE_HUMIDIFIER_2:
         if level == 0:
             return miio.airhumidifier_miot.OperationMode.Auto
@@ -287,7 +287,9 @@ class BasePlugin:
         Domoticz.Debug("onStart called")
         Domoticz.Debug("Miio library:" + ": " + miio.__version__)
         if miio.__version__ == "0.5.4":
-            Domoticz.Log("Please update Miio lib!")
+            Domoticz.Log(">>> Please update Miio lib !")
+            Domoticz.Log(">>> Please update Miio lib !!")
+            Domoticz.Log(">>> Please update Miio lib !!!")
 
         Domoticz.Heartbeat(20)
         self.pollinterval = int(Parameters["Mode3"]) * 60
@@ -397,9 +399,10 @@ class BasePlugin:
             elif Unit == self.UNIT_POWER_CONTROL and str(Command).upper() == "OFF":
                 humiRef.off()
 
-            elif Unit == self.UNIT_MODE_CONTROL and int(Level) == 10:
-                humiRef.set_mode(humiMode(int(Level), Parameters["Mode1"]))
+            elif Unit == self.UNIT_MODE_CONTROL:
+                humiRef.set_mode(humiLeve2Mode(int(Level), Parameters["Mode1"]))
 
+            # 30-80
             elif Unit == self.UNIT_TARGET_HUMIDITY and int(Level) == 0:
                 humiRef.set_target_humidity(50)
             elif Unit == self.UNIT_TARGET_HUMIDITY and int(Level) == 10:
@@ -563,9 +566,9 @@ class BasePlugin:
             try:
                 if res.mode == "OperationMode.Auto":
                     UpdateDevice(self.UNIT_MODE_CONTROL, 0, '0')
-                elif res.mode == "OperationMode.Silent" or res.mode == "OperationMode.Low":  # Humi4
+                elif res.mode == "OperationMode.Silent" or res.mode == "OperationMode.Low":  # zhimi.humidifier.ca4
                     UpdateDevice(self.UNIT_MODE_CONTROL, 10, '10')
-                elif res.mode == "OperationMode.Medium" or res.mode == "OperationMode.Mid":  # Humi4
+                elif res.mode == "OperationMode.Medium" or res.mode == "OperationMode.Mid":  # zhimi.humidifier.ca4
                     UpdateDevice(self.UNIT_MODE_CONTROL, 20, '20')
                 elif res.mode == "OperationMode.High":
                     UpdateDevice(self.UNIT_MODE_CONTROL, 30, '30')
@@ -599,11 +602,11 @@ class BasePlugin:
             nV = self.variables[unit]['nValue']
             sV = self.variables[unit]['sValue']
 
-            # cast float to str
+            # cast str to float
             if isinstance(sV, float):
                 sV = str(float("{0:.0f}".format(sV))).replace('.', ',')
 
-            # cast float to int
+            # cast str to int
             if isinstance(sV, int):
                 sV = str(sV)
 
