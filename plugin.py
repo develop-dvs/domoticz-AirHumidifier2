@@ -155,7 +155,7 @@ def _(key):
 def humiExecute(AddressIP, token, model):
     """New model https://python-miio.readthedocs.io/en/latest/api/miio.airhumidifier_miot.html"""
 
-    if model == 'zhimi.humidifier.ca4':
+    if miio.__version__ != '0.5.4':
         return miio.airhumidifier_miot.AirHumidifierMiot(AddressIP, token)
     else:
         return miio.airhumidifier.AirHumidifier(AddressIP, token, 0, 0, True, model)
@@ -200,37 +200,22 @@ class HumidifierStatus:
 
         """
         Domoticz.Debug("__init__ start")
-        miioVersion = miio.__version__
-        Domoticz.Debug("Lib: miio " + ": " + miioVersion)  # normal work at 0.5.4
+        Domoticz.Debug("Lib: miio " + ": " + miio.__version__)  # normal work at 0.5.4
 
         #addressIP = str(AddressIP)
         token = str(token)
         model = str(model)
         MyHumidifier = humiExecute(AddressIP, token, model)
-
         data = MyHumidifier.status()
+        Domoticz.Debug(data)
 
         if Parameters["Mode6"] == 'Debug':
             Domoticz.Debug("after")
             Domoticz.Debug(data)
             #Domoticz.Debug(str(data))
 
-        return
-        # Remap zhimi.humidifier.ca4
-        if model == 'zhimi.humidifier.ca4':
-            self.power = data.power
-            self.humidity = data.humidity
-            self.temperature = data.temperature
-            self.mode = data.mode
-            self.target_humidity = data.target_humidity
-            self.waterlevel = data.water_level
-            self.dry = data.dry
-            self.led_brightness = data.led_brightness
-            self.motor_speed = data.motor_speed
-            return
-
-        # Map zhimi.humidifier.*
-        if miioVersion == "0.5.4":
+        # Map old version
+        if miio.__version__ == "0.5.4":
             data = str(data)
             data = data[19:-2]
             data = data.replace(' ', '')
@@ -241,10 +226,19 @@ class HumidifierStatus:
             self.mode = data["mode"]
             self.target_humidity = int(data["target_humidity"][:-1])
             self.waterlevel = data["depth"]
-            # return
             if Parameters["Mode6"] == 'Debug':
                 for item in data.keys():
                     Domoticz.Debug(str(item) + " => " + str(data[item]))
+        else:
+            self.power = data.power
+            self.humidity = data.humidity
+            self.temperature = data.temperature
+            self.mode = data.mode
+            self.target_humidity = data.target_humidity
+            self.waterlevel = data.water_level
+            self.dry = data.dry
+            self.led_brightness = data.led_brightness
+            self.motor_speed = data.motor_speed
 
         return
 
