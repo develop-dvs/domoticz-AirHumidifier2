@@ -594,7 +594,7 @@ class BasePlugin:
 
     def doUpdate(self):
         Domoticz.Log(_("Starting device update"))
-        return
+
         for unit in self.variables:
             nV = self.variables[unit]['nValue']
             sV = self.variables[unit]['sValue']
@@ -602,6 +602,10 @@ class BasePlugin:
             # cast float to str
             if isinstance(sV, float):
                 sV = str(float("{0:.0f}".format(sV))).replace('.', ',')
+
+            # cast float to int
+            if isinstance(sV, int):
+                sV = str(sV)
 
             # Create device if required
             if sV:
