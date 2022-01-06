@@ -209,7 +209,7 @@ class HumidifierStatus:
 
         if Parameters["Mode6"] == 'Debug':
             Domoticz.Debug(str(data))
-            Domoticz.Debug("Lib: miio " + ": " + miio.__version__)
+            Domoticz.Debug("Lib: miio " + ": " + miio.__version__)  # normal work at 0.5.4
 
         # Remap zhimi.humidifier.ca4
         if model == 'zhimi.humidifier.ca4':
@@ -235,7 +235,7 @@ class HumidifierStatus:
         self.mode = data["mode"]
         self.target_humidity = int(data["target_humidity"][:-1])
         self.waterlevel = data["depth"]
-        #return
+        # return
         if Parameters["Mode6"] == 'Debug':
             for item in data.keys():
                 Domoticz.Debug(str(item) + " => " + str(data[item]))
@@ -383,32 +383,36 @@ class BasePlugin:
     def onCommand(self, Unit, Command, Level, Hue):
         Domoticz.Log(
             "onCommand called for Unit " + str(Unit) + ": Parameter '" + str(Command) + "', Level: " + str(Level))
-        MyHumidifier = humiExecute(Parameters["Address"], Parameters["Mode1"], Parameters["Mode2"])
+        try:
+            MyHumidifier = humiExecute(Parameters["Address"], Parameters["Mode1"], Parameters["Mode2"])
 
-        if Unit == self.UNIT_POWER_CONTROL and str(Command).upper() == "ON":
-            MyHumidifier.on()
-        elif Unit == self.UNIT_POWER_CONTROL and str(Command).upper() == "OFF":
-            MyHumidifier.off()
-        elif Unit == self.UNIT_MODE_CONTROL and int(Level) == 10:
-            MyHumidifier.set_mode(miio.airhumidifier.OperationMode.Silent)
-        elif Unit == self.UNIT_MODE_CONTROL and int(Level) == 0:
-            MyHumidifier.set_mode(miio.airhumidifier.OperationMode.Auto)
-        elif Unit == self.UNIT_MODE_CONTROL and int(Level) == 20:
-            MyHumidifier.set_mode(miio.airhumidifier.OperationMode.Medium)
-        elif Unit == self.UNIT_MODE_CONTROL and int(Level) == 30:
-            MyHumidifier.set_mode(miio.airhumidifier.OperationMode.High)
-        elif Unit == self.UNIT_TARGET_HUMIDITY and int(Level) == 0:
-            MyHumidifier.set_target_humidity(50)
-        elif Unit == self.UNIT_TARGET_HUMIDITY and int(Level) == 10:
-            MyHumidifier.set_target_humidity(60)
-        elif Unit == self.UNIT_TARGET_HUMIDITY and int(Level) == 20:
-            MyHumidifier.set_target_humidity(70)
-        else:
-            Domoticz.Log("onCommand called not found")
+            if Unit == self.UNIT_POWER_CONTROL and str(Command).upper() == "ON":
+                MyHumidifier.on()
+            elif Unit == self.UNIT_POWER_CONTROL and str(Command).upper() == "OFF":
+                MyHumidifier.off()
+            elif Unit == self.UNIT_MODE_CONTROL and int(Level) == 10:
+                MyHumidifier.set_mode(miio.airhumidifier.OperationMode.Silent)
+            elif Unit == self.UNIT_MODE_CONTROL and int(Level) == 0:
+                MyHumidifier.set_mode(miio.airhumidifier.OperationMode.Auto)
+            elif Unit == self.UNIT_MODE_CONTROL and int(Level) == 20:
+                MyHumidifier.set_mode(miio.airhumidifier.OperationMode.Medium)
+            elif Unit == self.UNIT_MODE_CONTROL and int(Level) == 30:
+                MyHumidifier.set_mode(miio.airhumidifier.OperationMode.High)
+            elif Unit == self.UNIT_TARGET_HUMIDITY and int(Level) == 0:
+                MyHumidifier.set_target_humidity(50)
+            elif Unit == self.UNIT_TARGET_HUMIDITY and int(Level) == 10:
+                MyHumidifier.set_target_humidity(60)
+            elif Unit == self.UNIT_TARGET_HUMIDITY and int(Level) == 20:
+                MyHumidifier.set_target_humidity(70)
+            else:
+                Domoticz.Log("onCommand called not found")
 
-        data = str(MyHumidifier.status())
-        if Parameters["Mode6"] == 'Debug':
-            Domoticz.Debug(data)
+            data = str(MyHumidifier.status())
+            if Parameters["Mode6"] == 'Debug':
+                Domoticz.Debug(data)
+        except Exception as e:
+            Domoticz.Error(_("onCommand error: %s") % str(e))
+
         self.onHeartbeat(fetch=True)
 
     def onNotification(self, Name, Subject, Text, Status, Priority, Sound, ImageFile):
