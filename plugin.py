@@ -234,9 +234,12 @@ class HumidifierStatus:
         self.mode = data["mode"]
         self.target_humidity = int(data["target_humidity"][:-1])
         self.waterlevel = data["depth"]
+        #return
+        if Parameters["Mode6"] == 'Debug':
+            for item in data.keys():
+                Domoticz.Debug(str(item) + " => " + str(data[item]))
+
         return
-        #for item in data.keys():
-        #    Domoticz.Debug(str(item) + " => " + str(data[item]))
 
 
 class BasePlugin:
@@ -527,11 +530,11 @@ class BasePlugin:
                 waterlevel = int(res.waterlevel) / 1.2
 
                 # Force fix water level
-                if waterlevel >= Parameters["Mode5"] & Parameters["Mode5"] != "":
+                if waterlevel >= Parameters["Mode5"] and Parameters["Mode5"] != "":
                     waterlevel = 100
                     # pollutionText = _("Normal waterlevel")
                     waterlevel_status = 1
-                elif waterlevel <= Parameters["Mode4"] & Parameters["Mode4"] != "":
+                elif waterlevel <= Parameters["Mode4"] and Parameters["Mode4"] != "":
                     waterlevel = 0
                     # pollutionText = _("Mini waterlevel")
                     waterlevel_status = 0
