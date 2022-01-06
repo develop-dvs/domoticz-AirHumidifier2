@@ -204,12 +204,13 @@ class HumidifierStatus:
         token = str(token)
         model = str(model)
         MyHumidifier = humiExecute(AddressIP, token, model)
+        Domoticz.Debug("Lib: miio " + ": " + miio.__version__)  # normal work at 0.5.4
 
         data = MyHumidifier.status()
 
         if Parameters["Mode6"] == 'Debug':
+            Domoticz.Debug(data)
             Domoticz.Debug(str(data))
-            Domoticz.Debug("Lib: miio " + ": " + miio.__version__)  # normal work at 0.5.4
 
         # Remap zhimi.humidifier.ca4
         if model == 'zhimi.humidifier.ca4':
@@ -410,9 +411,10 @@ class BasePlugin:
         except Exception as e:
             Domoticz.Error(_("onCommand error: %s") % str(e))
 
-        data = str(MyHumidifier.status())
+
         if Parameters["Mode6"] == 'Debug':
-            Domoticz.Debug(data)
+            data = MyHumidifier.status()
+            Domoticz.Debug(str(data))
 
         self.onHeartbeat(fetch=True)
 
