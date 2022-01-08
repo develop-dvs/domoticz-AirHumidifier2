@@ -37,7 +37,7 @@ from re import match
 import Domoticz
 import miio.airhumidifier
 import miio.airhumidifier_miot
-import numpy as np
+import numpy
 
 # Python framework in Domoticz do not include OS dependent path
 #
@@ -167,9 +167,9 @@ def fixWaterLevel(level):
     # Решаем систему уравнений
     m_list = [[max, 1], [min, 1]]
     r_list = [maxReal, minReal]
-    A = np.array(m_list)
-    B = np.array(r_list)
-    X = np.linalg.inv(A).dot(B)
+    A = numpy.array(m_list)
+    B = numpy.array(r_list)
+    X = numpy.linalg.inv(A).dot(B)
 
     # Решаем уравнение
     result = X[0] * level + X[1]
