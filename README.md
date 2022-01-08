@@ -11,12 +11,11 @@ Domoticz plugin for Xiaomi Humidifier 1 and 2
   * zhimi.humidifier.cb1
   * zhimi.humidifier.cb2
   * zhimi.humidifier.ca4 (mb work)
-* Add mathematic fix value level, if waterlevel sensor broken - 87%=Max and 32%=Min (>_<) need lib **numpy**
+* Add fix value level, if waterlevel sensor broken - 87%=Max and 32%=Min (>_<)
 * Work with latest python-miio-0.5.9.2 (at this moment, **0.5.4 - unsupported, mb.**)
 ## Installation
 ```
-sudo pip3 install -U python-miio numpy
-sudo apt-get install libatlas-base-dev
+sudo pip3 install -U python-miio
 ```
 * Make sure your Domoticz instance supports Domoticz Plugin System - see more https://www.domoticz.com/wiki/Using_Python_plugins
 
@@ -41,6 +40,3 @@ git pull
 ## Troubleshooting
 
 In case of issues, mostly plugin not visible on plugin list, check logs if plugin system is working correctly. See Domoticz wiki for resolution of most typical installation issues http://www.domoticz.com/wiki/Linux#Problems_locating_Python
-
-If you have error `Importing the numpy c-extensions failed`
-https://github.com/numpy/numpy/issues/14676#issuecomment-612242622
