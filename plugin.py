@@ -4,9 +4,9 @@
 #
 # TODO: ??
 #
-# v 0.5
+# v 0.4
 """
-<plugin key="AirHumidifier2" name="Xiaomi Air Humidifier" author="DCRM" version="0.5" wikilink="https://github.com/rytilahti/python-miio" externallink="https://github.com/develop-dvs/domoticz-AirHumidifier2">
+<plugin key="AirHumidifier2" name="Xiaomi Air Humidifier" author="DCRM" version="0.4" wikilink="https://github.com/rytilahti/python-miio" externallink="https://github.com/develop-dvs/domoticz-AirHumidifier2">
     <params>
 		<param field="Address" label="IP Address" width="200px" required="true" default="127.0.0.1"/>
 		<param field="Mode1" label="AirHumidifier Token" default="" width="400px" required="true"  />
@@ -37,7 +37,6 @@ from re import match
 import Domoticz
 import miio.airhumidifier
 import miio.airhumidifier_miot
-import numpy as np
 
 # Python framework in Domoticz do not include OS dependent path
 #
@@ -151,30 +150,6 @@ def _(key):
     except KeyError:
         return key
 
-def fixWaterLevel(level):
-    # Если не заданы параметры, возвращаем что есть
-    if Parameters["Mode5"] == "" or Parameters["Mode4"] == "":
-        return level
-
-    # Пограничные текущие значения с датчика
-    max = int(Parameters["Mode5"])
-    min = int(Parameters["Mode4"])
-
-    # Исходные значения
-    maxReal = 100  # Да, тут может быть и 120 (depth) и даже 125. Китайцы они такие.
-    minReal = 0
-
-    # Решаем систему уравнений
-    m_list = [[max, 1], [min, 1]]
-    r_list = [maxReal, minReal]
-    A = np.array(m_list)
-    B = np.array(r_list)
-    X = np.linalg.inv(A).dot(B)
-
-    # Решаем уравнение
-    result = X[0] * level + X[1]
-    return result
-
 
 def humiExecute(ip, token, model):
     """New model https://python-miio.readthedocs.io/en/latest/api/miio.airhumidifier_miot.html"""
@@ -271,7 +246,7 @@ class BasePlugin:
 
     def __init__(self):
         # Consts
-        self.version = "0.5"
+        self.version = "0.4"
 
         self.EXCEPTIONS = {
             "SENSOR_NOT_FOUND": 1,
@@ -561,11 +536,19 @@ class BasePlugin:
 
             try:
                 water_level = int(res.water_level)
-                # Fix water level
-                water_level = int(fixWaterLevel(water_level))
 
-                # pollutionText = _("Normal water_level") waterlevel_status = 1
-                # pollutionText = _("Mini water_level") waterlevel_status = 0
+                # Force fix water level
+                if Parameters["Mode5"] != "":
+                    if water_level >= int(Parameters["Mode5"]):
+                        water_level = 100
+                        # pollutionText = _("Normal water_level")
+                        waterlevel_status = 1
+
+                if Parameters["Mode4"] != "":
+                    if water_level <= int(Parameters["Mode4"]):
+                        water_level = 0
+                    # pollutionText = _("Mini water_level")
+                    waterlevel_status = 0
 
                 self.variables[self.UNIT_WATER_LEVEL]['nValue'] = int(water_level)
                 self.variables[self.UNIT_WATER_LEVEL]['sValue'] = water_level
