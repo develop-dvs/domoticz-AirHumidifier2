@@ -41,3 +41,6 @@ git pull
 ## Troubleshooting
 
 In case of issues, mostly plugin not visible on plugin list, check logs if plugin system is working correctly. See Domoticz wiki for resolution of most typical installation issues http://www.domoticz.com/wiki/Linux#Problems_locating_Python
+
+If you have error `Importing the numpy c-extensions failed`
+https://github.com/numpy/numpy/issues/14676#issuecomment-612242622
