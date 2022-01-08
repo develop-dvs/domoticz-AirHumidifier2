@@ -11,11 +11,11 @@ Domoticz plugin for Xiaomi Humidifier 1 and 2
   * zhimi.humidifier.cb1
   * zhimi.humidifier.cb2
   * zhimi.humidifier.ca4 (mb work)
-* Add force value level, if waterlevel sensor broken - 87%=Max and 32%=Min (>_<)
-* Work with latest python-miio-0.5.9.2 (at this moment, **0.5.4 - unsupported**)
+* Add mathematic fix value level, if waterlevel sensor broken - 87%=Max and 32%=Min (>_<) need lib **numpy**
+* Work with latest python-miio-0.5.9.2 (at this moment, **0.5.4 - unsupported, mb.**)
 ## Installation
 ```
-sudo pip3 install -U python-miio
+sudo pip3 install -U python-miio numpy
 ```
 
 * Make sure your Domoticz instance supports Domoticz Plugin System - see more https://www.domoticz.com/wiki/Using_Python_plugins
