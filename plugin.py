@@ -568,7 +568,8 @@ class BasePlugin:
                 # pollutionText = _("Mini water_level") waterlevel_status = 0
 
                 self.variables[self.UNIT_WATER_LEVEL]['nValue'] = int(water_level)
-                self.variables[self.UNIT_WATER_LEVEL]['sValue'] = str(water_level_in)+"->"+str(water_level)
+                self.variables[self.UNIT_WATER_LEVEL]['sValue'] = str(water_level)
+                #  self.variables[self.UNIT_WATER_LEVEL]['sValue'] = str(water_level_in) + "->" + str(water_level)
             except KeyError:
                 pass  # No water level value
 
