@@ -44,3 +44,12 @@ In case of issues, mostly plugin not visible on plugin list, check logs if plugi
 
 If you have error `Importing the numpy c-extensions failed`
 https://github.com/numpy/numpy/issues/14676#issuecomment-612242622
+```
+sudo apt-get install libatlas-base-dev
+```
+
+Starting 24 November 2021, latest numpy require at least Python 3.8
+To use python 3.7, latest numpy you can use is v1.21.4. So, to install it, use:
+```
+sudo pip3 install -U numpy==1.21.4
+```
