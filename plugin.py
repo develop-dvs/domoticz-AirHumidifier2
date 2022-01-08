@@ -560,15 +560,15 @@ class BasePlugin:
                 pass  # No temperature value
 
             try:
-                water_level = int(res.water_level)
+                water_level_in = int(res.water_level)
                 # Fix water level
-                water_level = int(fixWaterLevel(water_level))
+                water_level = int(fixWaterLevel(water_level_in))
 
                 # pollutionText = _("Normal water_level") waterlevel_status = 1
                 # pollutionText = _("Mini water_level") waterlevel_status = 0
 
                 self.variables[self.UNIT_WATER_LEVEL]['nValue'] = int(water_level)
-                self.variables[self.UNIT_WATER_LEVEL]['sValue'] = water_level
+                self.variables[self.UNIT_WATER_LEVEL]['sValue'] = str(water_level_in)+"->"+str(water_level)
             except KeyError:
                 pass  # No water level value
 
