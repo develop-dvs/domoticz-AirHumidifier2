@@ -15,7 +15,7 @@ Domoticz plugin for Xiaomi Humidifier 1 and 2
 * Work with latest python-miio-0.5.9.2 (at this moment, **0.5.4 - unsupported, mb.**)
 
 TODO:
-* Add mathematic fix value level (available in dev-5 branch)
+* Add mathematic fix value level (available in dev-05 branch)
 ## Installation
 ```
 sudo pip3 install -U python-miio
